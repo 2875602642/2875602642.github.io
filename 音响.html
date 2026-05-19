@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOUNDMAX - 高端音响品牌</title>
+    <!-- 引入图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* 全局变量 */
+        :root {
+            --primary-color: #000000;
+            --accent-color: #D4AF37; /* 金色 */
+            --text-light: #ffffff;
+            --text-gray: #888888;
+            --bg-dark: #121212;
+            --bg-light: #f5f5f5;
+        }
+
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* 导航栏 */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 40px;
+        }
+
+        nav ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        /* 轮播banner */
+        .banner {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            opacity: 0;
+            transition: 1.5s;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .banner-text {
+            position: absolute;
+            top: 50%;
+            left: 8%;
+            transform: translateY(-50%);
+            z-index: 100;
+            max-width: 600px;
+        }
+
+        .banner-text h1 {
+            font-size: 60px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .banner-text p {
+            font-size: 18px;
+            color: var(--text-gray);
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: #b8922a;
+            transform: translateY(-3px);
+        }
+
+        /* 通用section样式 */
+        section {
+            padding: 100px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+
+        .section-title p {
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 产品展示区 */
+        .products {
+            background-color: var(--bg-dark);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: #1c1c1c;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.4s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-info h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .product-info .price {
+            color: var(--accent-color);
+            font-size: 20px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .product-info p {
+            color: var(--text-gray);
+            margin-bottom: 20px;
+        }
+
+        /* 品牌特色 */
+        .features {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .feature-img {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .feature-img img {
+            width: 100%;
+            border-radius: 20px;
+        }
+
+        .feature-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .feature-item {
+            margin-bottom: 30px;
+        }
+
+        .feature-item i {
+            font-size: 30px;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .feature-item h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .feature-item p {
+            color: var(--text-gray);
+        }
+
+        /* 用户评价 */
+        .testimonials {
+            background-color: var(--bg-dark);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background-color: #1c1c1c;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .stars {
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .testimonial-card p {
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* 联系我们 */
+        .contact {
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+
+        .contact-item {
+            text-align: center;
+        }
+
+        .contact-item i {
+            font-size: 35px;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .contact-item h3 {
+            margin-bottom: 10px;
+        }
+
+        .contact-item p {
+            color: var(--text-gray);
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: #0a0a0a;
+            padding: 50px 8%;
+            text-align: center;
+        }
+
+        .social-links {
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            color: var(--text-light);
+            font-size: 22px;
+            margin: 0 15px;
+            transition: 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+
+        footer p {
+            color: var(--text-gray);
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .banner-text h1 {
+                font-size: 40px;
+            }
+
+            header {
+                padding: 15px 5%;
+            }
+
+            nav ul {
+                display: none; /* 移动端可自行改为汉堡菜单 */
+            }
+
+            section {
+                padding: 70px 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <a href="#" class="logo">SOUNDMAX</a>
+        <nav>
+            <ul>
+                <li><a href="#home">首页</a></li>
+                <li><a href="#products">产品</a></li>
+                <li><a href="#features">品牌特色</a></li>
+                <li><a href="#testimonials">用户评价</a></li>
+                <li><a href="#contact">联系我们</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 轮播banner -->
+    <section class="banner" id="home">
+        <div class="slide active">
+            <img src="https://images.unsplash.com/photo-1545208264-3f0f14b362d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="高端音响">
+            <div class="banner-text">
+                <h1>聆听纯粹原声<br>感受震撼音质</h1>
+                <p>SOUNDMAX专注高端音响制造，为你带来身临其境的听觉体验，还原音乐最真实的质感</p>
+                <a href="#products" class="btn">查看产品</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产品展示 -->
+    <section class="products" id="products">
+        <div class="section-title">
+            <h2>精选产品</h2>
+            <p>我们精选每一款音响产品，从设计到音质，只为满足你对高品质声音的追求</p>
+        </div>
+        <div class="product-grid">
+            <!-- 产品1 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1571165339826-27613031457c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="家用HiFi音响" class="product-img">
+                <div class="product-info">
+                    <h3>家用HiFi音响</h3>
+                    <p>高保真无损音质，适合客厅、书房使用，还原音乐本质</p>
+                    <div class="price">¥ 3,999</div>
+                    <a href="#" class="btn">立即购买</a>
+                </div>
+            </div>
+            <!-- 产品2 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1556836526-3967e20f962d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="便携式蓝牙音响" class="product-img">
+                <div class="product-info">
+                    <h3>便携式蓝牙音响</h3>
+                    <p>超长续航，防水设计，随时随地享受高品质音乐</p>
+                    <div class="price">¥ 1,299</div>
+                    <a href="#" class="btn">立即购买</a>
+                </div>
+            </div>
+            <!-- 产品3 -->
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1605751309116-8424de429386?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="家庭影院音响" class="product-img">
+                <div class="product-info">
+                    <h3>5.1家庭影院音响</h3>
+                    <p>3D环绕音效，打造私人影院，沉浸式观影体验</p>
+                    <div class="price">¥ 8,999</div>
+                    <a href="#" class="btn">立即购买</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 品牌特色 -->
+    <section class="features" id="features">
+        <div class="feature-img">
+            <img src="https://images.unsplash.com/photo-1585561321732-a7f3f41507a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="品牌特色">
+        </div>
+        <div class="feature-content">
+            <div class="section-title" style="text-align: left;">
+                <h2>我们的优势</h2>
+                <p>十年匠心工艺，专注声学研发，只为打造极致听觉体验</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-volume-up"></i>
+                <h3>顶级音质</h3>
+                <p>采用进口发声单元，专业声学调校，实现高保真无损播放</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-crown"></i>
+                <h3>高端工艺</h3>
+                <p>全手工打造，精选实木/金属材质，外观与音质双重兼顾</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-shield-alt"></i>
+                <h3>品质保障</h3>
+                <p>全国联保，2年免费质保，终身维护服务</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 用户评价 -->
+    <section class="testimonials" id="testimonials">
+        <div class="section-title">
+            <h2>用户口碑</h2>
+            <p>数万用户的真实选择，见证我们的品质与服务</p>
+        </div>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p>音质超出预期，低音浑厚，高音清澈，放在家里颜值也超高，朋友来了都夸好看！</p>
+                <div class="user">
+                    <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="用户">
+                    <div>
+                        <h4>李女士</h4>
+                        <p>家用HiFi音响用户</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p>便携音响小巧轻便，出门露营带着非常方便，防水效果也很好，续航能撑一整天！</p>
+                <div class="user">
+                    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="用户">
+                    <div>
+                        <h4>张先生</h4>
+                        <p>便携蓝牙音响用户</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section class="contact" id="contact">
+        <div class="section-title">
+            <h2>联系我们</h2>
+            <p>无论售前咨询还是售后服务，我们都将竭诚为您服务</p>
+        </div>
+        <div class="contact-info">
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <h3>电话咨询</h3>
+                <p>400-123-4567</p>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <h3>邮箱联系</h3>
+                <p>service@soundmax.com</p>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>实体门店</h3>
+                <p>北京市朝阳区音响体验中心</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-weixin"></i></a>
+            <a href="#"><i class="fab fa-weibo"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p>© 2025 SOUNDMAX 高端音响品牌 版权所有</p>
+    </footer>
+
+    <script>
+        // 轮播图自动切换
+        let slides = document.querySelectorAll('.slide');
+        let index = 0;
+
+        function changeSlide() {
+            slides[index].classList.remove('active');
+            index = (index + 1) % slides.length;
+            slides[index].classList.add('active');
+        }
+
+        setInterval(changeSlide, 5000);
+    </script>
+</body>
+</html>
